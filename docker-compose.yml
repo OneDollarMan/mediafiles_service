@@ -4,6 +4,7 @@ services:
     command: uvicorn main:app --host 0.0.0.0 --reload
     volumes:
       - ./src:/src
+      - ./tests:/tests
       - ./static:/static
     container_name: fastapi
     env_file: ".env"
@@ -20,6 +21,16 @@ services:
     container_name: postgres
     volumes:
       - postgresql_volume:/var/lib/postgresql/data/
+
+  localstack:
+    container_name: localstack
+    image: localstack/localstack
+    ports:
+      - "4566:4566"
+      - "4510-4559:4510-4559"
+    volumes:
+      - "./localstack:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
 
 volumes:
   postgresql_volume:
